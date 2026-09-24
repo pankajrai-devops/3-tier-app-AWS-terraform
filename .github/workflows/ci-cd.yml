@@ -29,9 +29,11 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install "moto[server]" boto3
-          moto_server -p 5001
+          moto_server -p 5001 > /dev/null 2>&1 &
           python seed_moto.py
           terraform init
+          terraform plan -out tfplan
+          terraform show -json tfplan | jq -r
     
 
   
