@@ -8,8 +8,8 @@ on:
       - main
 ##in production you wont put these keys here this is just to have the moto mock up work otherwis it complaints
 env:
-  AWS_ACCESS_KEY_ID="dummy"
-  AWS_SECRET_ACCESS_KEY="dummy"  
+  AWS_ACCESS_KEY_ID: "dummy"
+  AWS_SECRET_ACCESS_KEY: "dummy"  
 jobs:
   test:
     runs-on: ubuntu-latest
