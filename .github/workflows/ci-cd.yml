@@ -1,0 +1,37 @@
+name: terraform mock up test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+##in production you wont put these keys here this is just to have the moto mock up work otherwis it complaints
+env:
+  AWS_ACCESS_KEY_ID="dummy"
+  AWS_SECRET_ACCESS_KEY="dummy"  
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install HashiCorp Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.10.0" 
+      - name: Connect to API
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install "moto[server]" boto3
+          moto_server -p 5001
+          python seed_moto.py
+          terraform init
+    
+
+  
