@@ -24,12 +24,13 @@ jobs:
         uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: "1.10.0" 
-      - name: Connect to API
+      - name: terraform testing
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install "moto[server]" boto3
           moto_server -p 5001 > /dev/null 2>&1 &
+          sleep 10
           python seed_moto.py
           terraform init
           terraform plan -out tfplan
